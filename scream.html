@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scream / Unscream</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.1.1",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
+    "react/": "https://aistudiocdn.com/react@^19.1.1/"
+  }
+}
+</script>
+</head>
+<body class="bg-gray-900">
+    <main class="bg-gray-900 text-white min-h-screen flex flex-col items-center justify-center p-4 font-sans">
+        <div class="bg-gray-800 p-6 sm:p-8 rounded-2xl shadow-2xl w-full max-w-3xl border border-gray-700">
+            <div class="text-center mb-6">
+                <h1 class="text-4xl sm:text-5xl font-extrabold mb-2 text-red-500 tracking-tighter">
+                    SCREAMER
+                </h1>
+                <p class="text-gray-400 text-lg">
+                    Transform your text into an unholy scream, or bring it back to sanity.
+                </p>
+            </div>
+
+            <textarea
+                id="text-area"
+                class="w-full h-56 p-4 bg-gray-700 border-2 border-gray-600 rounded-lg text-xl text-gray-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition duration-300 resize-none font-mono"
+                placeholder="Enter or paste your text here..."
+            >HELLO WORLD, THIS IS A TEST OF THE SCREAM CIPHER.</textarea>
+
+            <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4 mt-6">
+                <button id="scream-btn" class="w-full sm:w-auto px-8 py-3 text-lg font-semibold rounded-lg shadow-md focus:outline-none transition duration-300 transform hover:scale-105 text-white uppercase tracking-wider bg-red-600 hover:bg-red-700 focus:ring-2 focus:ring-red-500 focus:ring-opacity-75">
+                    SCREAM
+                </button>
+                <button id="unscream-btn" class="w-full sm:w-auto px-8 py-3 text-lg font-semibold rounded-lg shadow-md focus:outline-none transition duration-300 transform hover:scale-105 text-white uppercase tracking-wider bg-gray-600 hover:bg-gray-700 focus:ring-2 focus:ring-gray-500 focus:ring-opacity-75">
+                    Unscream
+                </button>
+            </div>
+        </div>
+         <footer class="text-center mt-8 text-gray-500">
+            <p>Inspired by the Python cipher. Reimagined in Vanilla JS & Tailwind CSS.</p>
+        </footer>
+    </main>
+
+    <script>
+        const BASE_CIPHER = {
+            "A": "A", "B": "Á", "G": "Ẳ", "L": "Ậ", "Q": "Ǟ", "V": "À",
+            "C": "Ă", "H": "Ẵ", "M": "Ầ", "R": "Ȧ", "W": "Ả",
+            "D": "Ắ", "I": "Ǎ", "N": "Ẩ", "S": "Ǡ", "X": "Ȃ",
+            "E": "Ặ", "J": "Â", "O": "Ẫ", "T": "Ạ", "Y": "Ā",
+            "F": "Ằ", "K": "Ấ", "P": "Ä", "U": "Ȁ", "Z": "Ą",
+        };
+
+        const CIPHER = { ...BASE_CIPHER };
+        for (const key in BASE_CIPHER) {
+            CIPHER[key.toLowerCase()] = BASE_CIPHER[key].toLowerCase();
+        }
+
+        const UNCIPHER = {};
+        for (const key in CIPHER) {
+            UNCIPHER[CIPHER[key]] = key;
+        }
+
+        const scream = (text) => {
+            return text.split('').map(char => CIPHER[char] || char).join('');
+        };
+
+        const unscream = (text) => {
+            return text.split('').map(char => UNCIPHER[char] || char).join('');
+        };
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const textArea = document.getElementById('text-area');
+            const screamBtn = document.getElementById('scream-btn');
+            const unscreamBtn = document.getElementById('unscream-btn');
+
+            screamBtn.addEventListener('click', () => {
+                textArea.value = scream(textArea.value);
+            });
+
+            unscreamBtn.addEventListener('click', () => {
+                textArea.value = unscream(textArea.value);
+            });
+        });
+    </script>
+</body>
+</html>
